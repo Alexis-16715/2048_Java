@@ -53,9 +53,8 @@ public class Game2048Model {
 	private boolean moveUp() {
         boolean moved = false;
 
-        // Move numbers upwards for each column
+        // Mover números hacia arriba para cada columna
         for (int col = 0; col < grid.length; col++) {
-            // Compress numbers to the top
             int insertPos = 0;
             for (int row = 0; row < grid.length; row++) {
                 if (grid[row][col] != 0) {
@@ -69,7 +68,6 @@ public class Game2048Model {
                 }
             }
 
-            // Merge adjacent identical numbers
             for (int row = 0; row < grid.length - 1; row++) {
                 if (grid[row][col] != 0 && grid[row][col] == grid[row + 1][col]) {
                     // Merge the numbers
@@ -80,7 +78,6 @@ public class Game2048Model {
                 }
             }
 
-            // Compress numbers to the top after merging
             insertPos = 0;
             for (int row = 0; row < grid.length; row++) {
                 if (grid[row][col] != 0) {
@@ -100,14 +97,13 @@ public class Game2048Model {
     private boolean moveDown() {
         boolean moved = false;
 
-        // Move numbers downwards for each column
+        //Mover números hacia abajo para cada columna
         for (int col = 0; col < grid.length; col++) {
-            // Compress numbers to the bottom
+            // Comprimir números hasta el fondo
             int insertPos = grid.length - 1;
             for (int row = grid.length - 1; row >= 0; row--) {
                 if (grid[row][col] != 0) {
                     if (row != insertPos) {
-                        // Move the number to insertPos
                         grid[insertPos][col] = grid[row][col];
                         grid[row][col] = 0;
                         moved = true;
@@ -122,7 +118,7 @@ public class Game2048Model {
                     // Merge the numbers
                     grid[row][col] *= 2;
                     grid[row - 1][col] = 0;
-                    score += grid[row][col]; // Update score
+                    score += grid[row][col]; // Actualiza la score
                     moved = true;
                 }
             }
@@ -147,7 +143,7 @@ public class Game2048Model {
     private boolean moveLeft() {
         boolean moved = false;
 
-        // Move numbers to the left for each row
+        // Mover números hacia izquierda para cada columna
         for (int row = 0; row < grid.length; row++) {
             // Compress numbers to the left
             int insertPos = 0;
@@ -169,17 +165,17 @@ public class Game2048Model {
                     // Merge the numbers
                     grid[row][col] *= 2;
                     grid[row][col + 1] = 0;
-                    score += grid[row][col]; // Update score
+                    score += grid[row][col]; // Actualiza la score
                     moved = true;
                 }
             }
 
-            // Compress numbers to the left after merging
+            // Comprimir números hacia la izquierda después de fusionarlos
             insertPos = 0;
             for (int col = 0; col < grid.length; col++) {
                 if (grid[row][col] != 0) {
                     if (col != insertPos) {
-                        // Move the number to insertPos after merging
+                        // Mueva el número para insertarPos después de fusionar
                         grid[row][insertPos] = grid[row][col];
                         grid[row][col] = 0;
                     }
@@ -194,7 +190,7 @@ public class Game2048Model {
     private boolean moveRight() {
         boolean moved = false;
 
-        // Move numbers to the right for each row
+        // Mover números hacia derecha para cada columna
         for (int row = 0; row < grid.length; row++) {
             // Compress numbers to the right
             int insertPos = grid.length - 1;
@@ -210,23 +206,21 @@ public class Game2048Model {
                 }
             }
 
-            // Merge adjacent identical numbers
             for (int col = grid.length - 1; col > 0; col--) {
                 if (grid[row][col] != 0 && grid[row][col] == grid[row][col - 1]) {
                     // Merge the numbers
                     grid[row][col] *= 2;
                     grid[row][col - 1] = 0;
-                    score += grid[row][col]; // Update score
+                    score += grid[row][col]; // Actualiza la score
                     moved = true;
                 }
             }
 
-            // Compress numbers to the right after merging
+            // Comprimir números a la derecha después de fusionarlos
             insertPos = grid.length - 1;
             for (int col = grid.length - 1; col >= 0; col--) {
                 if (grid[row][col] != 0) {
                     if (col != insertPos) {
-                        // Move the number to insertPos after merging
                         grid[row][insertPos] = grid[row][col];
                         grid[row][col] = 0;
                     }
@@ -253,17 +247,17 @@ public class Game2048Model {
 	
 	
     private boolean canMove() {
-        // Check if there are possible movements
+        // Comprobar si hay posibles movimientos
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid.length; j++) {
                 if (grid[i][j] == 0) {
                     return true; // There is at least one empty cell
                 }
                 if (j < grid.length - 1 && grid[i][j] == grid[i][j + 1]) {
-                    return true; // There are at least two adjacent cells with the same value
+                    return true; // Hay al menos dos celdas adyacentes con el mismo valor
                 }
                 if (i < grid.length - 1 && grid[i][j] == grid[i + 1][j]) {
-                    return true; // There are at least two adjacent cells with the same value
+                    return true; // Hay al menos dos celdas adyacentes con el mismo valor
                 }
             }
         }
@@ -293,7 +287,7 @@ public class Game2048Model {
 
 	public boolean isGameOver() {
 		// TODO Auto-generated method stub
-		return false;
+		return canMove();
 	}
 
 }
