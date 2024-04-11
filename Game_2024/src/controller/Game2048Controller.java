@@ -32,49 +32,46 @@ public class Game2048Controller implements KeyListener {
     }
 	@Override
 	public void keyTyped(KeyEvent e) {}
-	public void keyPressed(KeyEvent e) {}
+	public void keyPressed(KeyEvent e) {int keyArrows = e.getKeyCode();
 	
-	public void keyReleased(KeyEvent e) {
-		
-		int keyArrows = e.getKeyCode();
-		
-		
-		Game2048Model.Direction direction = null;
-        switch (keyArrows) {
-        	
-            case KeyEvent.VK_UP:
-                direction = Game2048Model.Direction.UP;
-                break;
-            case KeyEvent.VK_DOWN:
-                direction = Game2048Model.Direction.DOWN;
-                break;
-            case KeyEvent.VK_LEFT:
-                direction = Game2048Model.Direction.LEFT;
-                break;
-            case KeyEvent.VK_RIGHT:
-                direction = Game2048Model.Direction.RIGHT;
-                break;
-            default:
-				break;
- 
-            
+	
+	Game2048Model.Direction direction = null;
+    switch (keyArrows) {
+    	
+        case KeyEvent.VK_UP:
+            direction = Game2048Model.Direction.UP;
+            break;
+        case KeyEvent.VK_DOWN:
+            direction = Game2048Model.Direction.DOWN;
+            break;
+        case KeyEvent.VK_LEFT:
+            direction = Game2048Model.Direction.LEFT;
+            break;
+        case KeyEvent.VK_RIGHT:
+            direction = Game2048Model.Direction.RIGHT;
+            break;
+        default:
+			break;
+
+        
+    }
+    
+    if (direction != null) {
+        model.move(direction);
+        if(model.getScore() > bestScore) {
+        	bestScore = model.getScore();
         }
         
-        if (direction != null) {
-            model.move(direction);
-            if(model.getScore() > bestScore) {
-            	bestScore = model.getScore();
-            }
-            
-            
-            view.updateView(model.getGrid(), model.getScore(), bestScore);
-            // Check if the game is over
-            if (model.isGameOver()) {
-            	
-            	
-            }
+        
+        view.updateView(model.getGrid(), model.getScore(), bestScore);
+        // Check if the game is over
+        if (model.isGameOver()) {
+        	
+        	
         }
-    }
+    }}
+	
+	public void keyReleased(KeyEvent e) {}
 	
 	
 	private void attachListenersGame() {
