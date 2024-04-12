@@ -15,7 +15,7 @@ import java.awt.Font;
 import java.awt.FlowLayout;
 
 
-public class Game2048View extends JFrame {
+public class GameView extends JFrame {
 	
 	private URL image = getClass().getResource("/images/2048.png");
 	
@@ -45,7 +45,7 @@ public class Game2048View extends JFrame {
 	
 	private static final String FONT = "Tahoma";
 	
-	public Game2048View() {
+	public GameView() {
 		initialize();
 	}
 

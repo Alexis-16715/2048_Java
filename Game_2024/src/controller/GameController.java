@@ -7,13 +7,13 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JButton;
 
-import model.Game2048Model;
-import view.Game2048View;
+import model.GameModel;
+import view.GameView;
 
-public class Game2048Controller implements KeyListener {
+public class GameController implements KeyListener {
 	
-    private Game2048Model model;
-    private Game2048View view;
+    private GameModel model;
+    private GameView view;
     
     
     private JButton bottonNewGame;
@@ -22,7 +22,7 @@ public class Game2048Controller implements KeyListener {
     private int bestScore;
     
 
-    public Game2048Controller(Game2048Model model, Game2048View view) {
+    public GameController(GameModel model, GameView view) {
         this.model = model;
         this.view = view;
         attachListenersGame();
@@ -35,20 +35,21 @@ public class Game2048Controller implements KeyListener {
 	public void keyPressed(KeyEvent e) {int keyArrows = e.getKeyCode();
 	
 	
-	Game2048Model.Direction direction = null;
+	GameModel.Direction direction = null;
     switch (keyArrows) {
     	
         case KeyEvent.VK_UP:
-            direction = Game2048Model.Direction.UP;
+        	
+            direction = GameModel.Direction.UP;
             break;
         case KeyEvent.VK_DOWN:
-            direction = Game2048Model.Direction.DOWN;
+            direction = GameModel.Direction.DOWN;
             break;
         case KeyEvent.VK_LEFT:
-            direction = Game2048Model.Direction.LEFT;
+            direction = GameModel.Direction.LEFT;
             break;
         case KeyEvent.VK_RIGHT:
-            direction = Game2048Model.Direction.RIGHT;
+            direction = GameModel.Direction.RIGHT;
             break;
         default:
 			break;
@@ -89,7 +90,7 @@ public class Game2048Controller implements KeyListener {
 	private void startNewGame () {
 		// TODO Auto-generated method stub
 		
-		model = new Game2048Model();
+		model = new GameModel();
 		view.updateView(model.getGrid(), model.getScore(), bestScore);
 		view.addKeyListener(this);
 		view.requestFocusInWindow();

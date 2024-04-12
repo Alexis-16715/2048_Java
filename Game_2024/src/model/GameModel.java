@@ -5,14 +5,14 @@ import java.util.List;
 import java.util.Random;
 
 
-public class Game2048Model {
+public class GameModel {
 	
 	private int[][] grid;
     private Random random;
     private int score;
     private int bestScore;
 
-	public Game2048Model() {
+	public GameModel() {
         grid = new int[4][4];
         random = new Random();
         addNewNumber();
@@ -36,6 +36,9 @@ public class Game2048Model {
                 moved = moveRight();
                 break;
         }
+        
+        
+        
 
         if (moved) {
         	addNewNumber();
