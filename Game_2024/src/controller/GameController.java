@@ -58,19 +58,20 @@ public class GameController implements KeyListener {
     }
     
     if (direction != null) {
+    	
         model.move(direction);
         if(model.getScore() > bestScore) {
         	bestScore = model.getScore();
         }
         
-        
         view.updateView(model.getGrid(), model.getScore(), bestScore);
         // Check if the game is over
-        if (model.isGameOver()) {
-        	
-        	
-        }
-    }}
+        if (!model.isGameOver()) {
+        	view.removeKeyListener(this);
+        	view.getLabelOfVicotryOrDefeated().setText("You Lost... Try Again");
+          }
+       }
+    }
 	
 	public void keyReleased(KeyEvent e) {}
 	
@@ -99,4 +100,3 @@ public class GameController implements KeyListener {
 		
 		
 }
-

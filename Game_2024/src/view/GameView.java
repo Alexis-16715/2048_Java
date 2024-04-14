@@ -11,12 +11,19 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+
 import java.awt.Font;
 import java.awt.FlowLayout;
 
 
 public class GameView extends JFrame {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private URL image = getClass().getResource("/images/2048.png");
 	
 	private JButton bottonNewGame;
@@ -41,7 +48,13 @@ public class GameView extends JFrame {
 	private JPanel backgroundPanel;
 	private JPanel backgroundPanel2;
 	
+	
+	private   Color bright = new Color (118,109,100);
+	private   Color light = new Color (242,242,242);
+	
 	private HashMap<Integer, Color> ColorButtons = new HashMap<>();
+
+	private JLabel labelOfVicotryOrDefeated;
 	
 	private static final String FONT = "Tahoma";
 	
@@ -140,9 +153,18 @@ public class GameView extends JFrame {
         bestScore.setFont( new Font(FONT, Font.BOLD, 10) );
         backgroundPanel2.add(bestScore);
         
+        labelOfVicotryOrDefeated = new JLabel("");
+        labelOfVicotryOrDefeated.setBounds(59, 117, 219, 14);
+        getContentPane().add(labelOfVicotryOrDefeated);
+        
+        
         initializeGridButtons();
         
         initColorButtons();
+        
+        
+        
+        
         
 	}
 	
@@ -173,9 +195,13 @@ public class GameView extends JFrame {
                 
                 button.setFont(new Font("Arial", Font.BOLD, 24));
                 button.setEnabled(false);
+                
+//                button.setContentAreaFilled(false);
+                
                 button.setBorder(null);
                 button.setBackground(new Color(205, 193, 179));
                 button.setBounds(15+column*80, 10+row*77, 70, 70);
+
                 
                 gridButtons[row][column] = button;
                 gridPanel.add(gridButtons[row][column]);
@@ -186,24 +212,43 @@ public class GameView extends JFrame {
 	public void updateView(int[][] grid, int valueScore, int valueBestScore) {
         // Actualizar la interfaz gráfica con la nueva configuración de la grilla
 		
-		
+		labelOfVicotryOrDefeated.setText("");
 		score.setText(String.valueOf(valueScore));
 		bestScore.setText(String.valueOf(valueBestScore));
         for (int row = 0; row < grid.length; row++) {
             for (int column = 0; column < grid[0].length; column++) {
-                if (grid[row][column] == 0) {
-                    gridButtons[row][column].setText(""); // Empty cell
-                    gridButtons[row][column].setBackground(ColorButtons.get(0));
+            	int valueGird = grid[row][column];
+            	JButton button = gridButtons[row][column];
+                if (valueGird == 0) {
+                	button.setText(""); // Empty cell
+                    button.setBackground(ColorButtons.get(0));
                 } else {
-                	
-                	gridButtons[row][column].setBackground(ColorButtons.get(grid[row][column]));
-                    gridButtons[row][column].setText(String.valueOf(grid[row][column])); // Show number
+                	button.setBackground(ColorButtons.get(valueGird));
+                	button.setText(String.valueOf(valueGird)); // Mostrar numero
                 }
+                if (valueGird == 2048) {
+                	labelOfVicotryOrDefeated.setText("You won, you can still play the game");
+                }
+                getTileColor(grid[row][column], gridButtons[row][column]);
             }
         }
         repaint();
     }
 	
+	private void getTileColor(int value, JButton button) {
+		if (value < 8) {
+			button.setForeground(bright);
+		} else {
+			button.setForeground(light);
+		}
+	}
+	
+	
+	
+	public JLabel getLabelOfVicotryOrDefeated() {
+		return labelOfVicotryOrDefeated;
+	}
+
 	public JPanel getGridPanel() {
 		return gridPanel;
 	}
@@ -223,6 +268,4 @@ public class GameView extends JFrame {
 	public JButton getBottonNewGame() {
 		return bottonNewGame;
 	}
-	
-	
 }
