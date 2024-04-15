@@ -78,7 +78,6 @@ public class GameController implements KeyListener {
 	
 	private void attachListenersGame() {
 		bottonNewGame = view.getBottonNewGame();
-		
 		bottonNewGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -89,8 +88,6 @@ public class GameController implements KeyListener {
 	}
 	
 	private void startNewGame () {
-		// TODO Auto-generated method stub
-		
 		model = new GameModel();
 		view.updateView(model.getGrid(), model.getScore(), bestScore);
 		view.addKeyListener(this);

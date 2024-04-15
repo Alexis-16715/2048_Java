@@ -50,11 +50,9 @@ public class GameModel {
         UP, DOWN, LEFT, RIGHT
     }
 	
-	
 
 	private boolean moveUp() {
         boolean moved = false;
-
         // Mover números hacia arriba para cada columna
         for (int col = 0; col < grid.length; col++) {
             int insertPos = 0;
@@ -72,10 +70,9 @@ public class GameModel {
 
             for (int row = 0; row < grid.length - 1; row++) {
                 if (grid[row][col] != 0 && grid[row][col] == grid[row + 1][col]) {
-                    // Merge the numbers
                     grid[row][col] *= 2;
                     grid[row + 1][col] = 0;
-                    score += grid[row][col]; // Update score
+                    score += grid[row][col];
                     moved = true;
                 }
             }
@@ -114,7 +111,7 @@ public class GameModel {
                 }
             }
 
-            // Merge adjacent identical numbers
+            // Convina mismo numeros
             for (int row = grid.length - 1; row > 0; row--) {
                 if (grid[row][col] != 0 && grid[row][col] == grid[row - 1][col]) {
                     // Merge the numbers
@@ -152,7 +149,7 @@ public class GameModel {
             for (int col = 0; col < grid.length; col++) {
                 if (grid[row][col] != 0) {
                     if (col != insertPos) {
-                        // Move the number to insertPos
+                        // Mueva el número para insertar Pod
                         grid[row][insertPos] = grid[row][col];
                         grid[row][col] = 0;
                         moved = true;
@@ -199,7 +196,7 @@ public class GameModel {
             for (int col = grid.length - 1; col >= 0; col--) {
                 if (grid[row][col] != 0) {
                     if (col != insertPos) {
-                        // Move the number to insertPos
+                        // Mueva el número para insertar Pod
                         grid[row][insertPos] = grid[row][col];
                         grid[row][col] = 0;
                         moved = true;
@@ -235,14 +232,15 @@ public class GameModel {
     }
     
     private void addNewNumber() {
-        int value = (random.nextDouble() < 0.9) ? 2 : 4; // 90% chance for 2, 10% chance for 4
+        int value = (random.nextDouble() < 0.9) ? 2 : 4; // 90%  para 2, 10% para 4
         // Place the new number in an empty cell
-        while (true) {
+        boolean addToGrid = true;
+        while (addToGrid == true) {
             int row = random.nextInt(grid.length);
             int col = random.nextInt(grid.length);
             if (grid[row][col] == 0) {
                 grid[row][col] = value;
-                break;
+                addToGrid = false;
             }
         }
     }
@@ -283,12 +281,10 @@ public class GameModel {
 
 
 	public int[][] getGrid() {
-		// TODO Auto-generated method stub
 		return grid;
 	}
 
 	public boolean isGameOver() {
-		// TODO Auto-generated method stub
 		return canMove();
 	}
 
