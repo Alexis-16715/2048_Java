@@ -35,9 +35,6 @@ public class GameModel {
                 moved = moveRight();
                 break;
         }
-        
-        
-        
 
         if (moved) {
         	addNewNumber();
@@ -49,8 +46,42 @@ public class GameModel {
     public enum Direction {
         UP, DOWN, LEFT, RIGHT
     }
+    
+    private void addNewNumber() {
+        int value = (random.nextDouble() < 0.9) ? 2 : 4; // 90%  para 2, 10% para 4
+        // Coloque el nuevo número en una celda vacía.
+        boolean addToGrid = true;
+        while (addToGrid == true) {
+            int row = random.nextInt(grid.length);
+            int col = random.nextInt(grid.length);
+            if (grid[row][col] == 0) {
+                grid[row][col] = value;
+                addToGrid = false;
+            }
+        }
+    }
 	
-
+	
+    private boolean canMove() {
+        // Comprobar si hay posibles movimientos
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid.length; j++) {
+                if (grid[i][j] == 0) {
+                    return true; // There is at least one empty cell
+                }
+                if (j < grid.length - 1 && grid[i][j] == grid[i][j + 1]) {
+                    return true; // Hay al menos dos celdas adyacentes con el mismo valor
+                }
+                if (i < grid.length - 1 && grid[i][j] == grid[i + 1][j]) {
+                    return true; // Hay al menos dos celdas adyacentes con el mismo valor
+                }
+            }
+        }
+        
+        return false;
+    }
+    
+    
     private boolean moveUp() {
         boolean moved = false;
 
@@ -181,41 +212,8 @@ public class GameModel {
 
         return moved;
     }
-
     
-    private void addNewNumber() {
-        int value = (random.nextDouble() < 0.9) ? 2 : 4; // 90%  para 2, 10% para 4
-        // Coloque el nuevo número en una celda vacía.
-        boolean addToGrid = true;
-        while (addToGrid == true) {
-            int row = random.nextInt(grid.length);
-            int col = random.nextInt(grid.length);
-            if (grid[row][col] == 0) {
-                grid[row][col] = value;
-                addToGrid = false;
-            }
-        }
-    }
-	
-	
-    private boolean canMove() {
-        // Comprobar si hay posibles movimientos
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid.length; j++) {
-                if (grid[i][j] == 0) {
-                    return true; // There is at least one empty cell
-                }
-                if (j < grid.length - 1 && grid[i][j] == grid[i][j + 1]) {
-                    return true; // Hay al menos dos celdas adyacentes con el mismo valor
-                }
-                if (i < grid.length - 1 && grid[i][j] == grid[i + 1][j]) {
-                    return true; // Hay al menos dos celdas adyacentes con el mismo valor
-                }
-            }
-        }
-        
-        return false;
-    }
+    
     
     
 	

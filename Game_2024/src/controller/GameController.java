@@ -32,15 +32,13 @@ public class GameController implements KeyListener {
     }
 	@Override
 	public void keyTyped(KeyEvent e) {}
-	public void keyPressed(KeyEvent e) {int keyArrows = e.getKeyCode();
-	
-	
-	GameModel.Direction direction = null;
-    switch (keyArrows) {
-    	
-        case KeyEvent.VK_UP:
-        	
-            direction = GameModel.Direction.UP;
+	public void keyPressed(KeyEvent e) {
+		
+		int keyArrows = e.getKeyCode();
+		GameModel.Direction direction = null;
+		switch (keyArrows) {
+		case KeyEvent.VK_UP:
+			direction = GameModel.Direction.UP;
             break;
         case KeyEvent.VK_DOWN:
             direction = GameModel.Direction.DOWN;
@@ -53,24 +51,21 @@ public class GameController implements KeyListener {
             break;
         default:
 			break;
-
-        
-    }
-    
-    if (direction != null) {
-    	
-        model.move(direction);
-        if(model.getScore() > bestScore) {
-        	bestScore = model.getScore();
-        }
-        
-        view.updateView(model.getGrid(), model.getScore(), bestScore);
-        // Check if the game is over
-        if (!model.isGameOver()) {
-        	view.removeKeyListener(this);
-        	view.getLabelOfVicotryOrDefeated().setText("You Lost... Try Again");
-          }
-       }
+			}
+		if (direction != null) {
+			model.move(direction);
+			if(model.getScore() > bestScore) {
+				bestScore = model.getScore();
+				}
+			view.updateView(model.getGrid(), model.getScore(), bestScore);
+			
+			// Se fija se si el juego se termino
+			if (!model.isGameOver()) {
+				view.removeKeyListener(this);
+				view.getLabelOfVicotryOrDefeated().setText("You Lost... Try Again");
+				}
+			}
+		
     }
 	
 	public void keyReleased(KeyEvent e) {}
