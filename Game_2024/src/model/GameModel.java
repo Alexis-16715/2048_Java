@@ -51,189 +51,141 @@ public class GameModel {
     }
 	
 
-	private boolean moveUp() {
+    private boolean moveUp() {
         boolean moved = false;
-        // Mover números hacia arriba para cada columna
+
+        // Iterar sobre cada columna
         for (int col = 0; col < grid.length; col++) {
             int insertPos = 0;
+            boolean canMerge = false;
             for (int row = 0; row < grid.length; row++) {
                 if (grid[row][col] != 0) {
-                    if (row != insertPos) {
-                        // Move the number to insertPos
-                        grid[insertPos][col] = grid[row][col];
+                    if (canMerge && grid[insertPos - 1][col] == grid[row][col]) {
+                        // Fusionarse con la celda anterior
+                        grid[insertPos - 1][col] *= 2;
                         grid[row][col] = 0;
+                        score += grid[insertPos - 1][col];
                         moved = true;
+                        canMerge = false; // Evitar la fusión inmediata con el siguiente
+                    } else {
+                        // Pasar a la siguiente posición disponible
+                        if (row != insertPos) {
+                            grid[insertPos][col] = grid[row][col];
+                            grid[row][col] = 0;
+                            moved = true;
+                        }
+                        insertPos++;
+                        canMerge = true; // Habilitar posible fusión con la siguiente
                     }
-                    insertPos++;
-                }
-            }
-
-            for (int row = 0; row < grid.length - 1; row++) {
-                if (grid[row][col] != 0 && grid[row][col] == grid[row + 1][col]) {
-                    grid[row][col] *= 2;
-                    grid[row + 1][col] = 0;
-                    score += grid[row][col];
-                    moved = true;
-                }
-            }
-
-            insertPos = 0;
-            for (int row = 0; row < grid.length; row++) {
-                if (grid[row][col] != 0) {
-                    if (row != insertPos) {
-                        // Move the number to insertPos after merging
-                        grid[insertPos][col] = grid[row][col];
-                        grid[row][col] = 0;
-                    }
-                    insertPos++;
                 }
             }
         }
 
         return moved;
     }
+
+    
+    
     
     private boolean moveDown() {
         boolean moved = false;
 
-        //Mover números hacia abajo para cada columna
         for (int col = 0; col < grid.length; col++) {
-            // Comprimir números hasta el fondo
             int insertPos = grid.length - 1;
+            boolean canMerge = false;
+
             for (int row = grid.length - 1; row >= 0; row--) {
                 if (grid[row][col] != 0) {
-                    if (row != insertPos) {
-                        grid[insertPos][col] = grid[row][col];
+                    if (canMerge && grid[insertPos + 1][col] == grid[row][col]) {
+                        grid[insertPos + 1][col] *= 2;
                         grid[row][col] = 0;
+                        score += grid[insertPos + 1][col];
                         moved = true;
+                        canMerge = false; 
+                    } else {
+                        if (row != insertPos) {
+                            grid[insertPos][col] = grid[row][col];
+                            grid[row][col] = 0;
+                            moved = true;
+                        }
+                        insertPos--;
+                        canMerge = true;
                     }
-                    insertPos--;
-                }
-            }
-
-            // Convina mismo numeros
-            for (int row = grid.length - 1; row > 0; row--) {
-                if (grid[row][col] != 0 && grid[row][col] == grid[row - 1][col]) {
-                    // Merge the numbers
-                    grid[row][col] *= 2;
-                    grid[row - 1][col] = 0;
-                    score += grid[row][col]; // Actualiza la score
-                    moved = true;
-                }
-            }
-
-            // Compress numbers to the bottom after merging
-            insertPos = grid.length - 1;
-            for (int row = grid.length - 1; row >= 0; row--) {
-                if (grid[row][col] != 0) {
-                    if (row != insertPos) {
-                        // Move the number to insertPos after merging
-                        grid[insertPos][col] = grid[row][col];
-                        grid[row][col] = 0;
-                    }
-                    insertPos--;
                 }
             }
         }
 
         return moved;
     }
+
 
     private boolean moveLeft() {
         boolean moved = false;
 
-        // Mover números hacia izquierda para cada columna
         for (int row = 0; row < grid.length; row++) {
-            // Compress numbers to the left
             int insertPos = 0;
-            for (int col = 0; col < grid.length; col++) {
+            boolean canMerge = false;
+
+            for (int col = 0; col < grid[row].length; col++) {
                 if (grid[row][col] != 0) {
-                    if (col != insertPos) {
-                        // Mueva el número para insertar Pod
-                        grid[row][insertPos] = grid[row][col];
+                    if (canMerge && grid[row][insertPos - 1] == grid[row][col]) {
+                        grid[row][insertPos - 1] *= 2;
                         grid[row][col] = 0;
+                        score += grid[row][insertPos - 1];
                         moved = true;
+                        canMerge = false;
+                    } else {
+                        if (col != insertPos) {
+                            grid[row][insertPos] = grid[row][col];
+                            grid[row][col] = 0;
+                            moved = true;
+                        }
+                        insertPos++;
+                        canMerge = true;
                     }
-                    insertPos++;
-                }
-            }
-
-            // Merge adjacent identical numbers
-            for (int col = 0; col < grid.length - 1; col++) {
-                if (grid[row][col] != 0 && grid[row][col] == grid[row][col + 1]) {
-                    // Merge the numbers
-                    grid[row][col] *= 2;
-                    grid[row][col + 1] = 0;
-                    score += grid[row][col]; // Actualiza la score
-                    moved = true;
-                }
-            }
-
-            // Comprimir números hacia la izquierda después de fusionarlos
-            insertPos = 0;
-            for (int col = 0; col < grid.length; col++) {
-                if (grid[row][col] != 0) {
-                    if (col != insertPos) {
-                        // Mueva el número para insertarPos después de fusionar
-                        grid[row][insertPos] = grid[row][col];
-                        grid[row][col] = 0;
-                    }
-                    insertPos++;
                 }
             }
         }
 
         return moved;
     }
+
 
     private boolean moveRight() {
         boolean moved = false;
 
-        // Mover números hacia derecha para cada columna
         for (int row = 0; row < grid.length; row++) {
-            // Compress numbers to the right
-            int insertPos = grid.length - 1;
-            for (int col = grid.length - 1; col >= 0; col--) {
+            int insertPos = grid[row].length - 1;
+            boolean canMerge = false;
+
+            for (int col = grid[row].length - 1; col >= 0; col--) {
                 if (grid[row][col] != 0) {
-                    if (col != insertPos) {
-                        // Mueva el número para insertar Pod
-                        grid[row][insertPos] = grid[row][col];
+                    if (canMerge && grid[row][insertPos + 1] == grid[row][col]) {
+                        grid[row][insertPos + 1] *= 2;
                         grid[row][col] = 0;
+                        score += grid[row][insertPos + 1];
                         moved = true;
+                        canMerge = false;
+                    } else {
+                        if (col != insertPos) {
+                            grid[row][insertPos] = grid[row][col];
+                            grid[row][col] = 0;
+                            moved = true;
+                        }
+                        insertPos--;
+                        canMerge = true;
                     }
-                    insertPos--;
-                }
-            }
-
-            for (int col = grid.length - 1; col > 0; col--) {
-                if (grid[row][col] != 0 && grid[row][col] == grid[row][col - 1]) {
-                    // Merge the numbers
-                    grid[row][col] *= 2;
-                    grid[row][col - 1] = 0;
-                    score += grid[row][col]; // Actualiza la score
-                    moved = true;
-                }
-            }
-
-            // Comprimir números a la derecha después de fusionarlos
-            insertPos = grid.length - 1;
-            for (int col = grid.length - 1; col >= 0; col--) {
-                if (grid[row][col] != 0) {
-                    if (col != insertPos) {
-                        grid[row][insertPos] = grid[row][col];
-                        grid[row][col] = 0;
-                    }
-                    insertPos--;
                 }
             }
         }
 
         return moved;
     }
+
     
     private void addNewNumber() {
         int value = (random.nextDouble() < 0.9) ? 2 : 4; // 90%  para 2, 10% para 4
-        // Place the new number in an empty cell
+        // Coloque el nuevo número en una celda vacía.
         boolean addToGrid = true;
         while (addToGrid == true) {
             int row = random.nextInt(grid.length);
